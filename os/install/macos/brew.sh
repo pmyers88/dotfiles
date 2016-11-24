@@ -14,12 +14,15 @@ brew upgrade
 apps=(
     android-platform-tools
     docker
-    docker-compose
     docker-machine
     dockutil
+    python
     tree
     wget
     yarn
 )
 
 brew install "${apps[@]}"
+
+brew link docker
+brew install docker-compose

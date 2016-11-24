@@ -1,5 +1,5 @@
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
-export DOTFILES=$HOME/Development/.dotfiles
+export DOTFILES=$HOME/Development/dotfiles
 export ANTIGEN_HOME=$HOME/.antigen
 export EDITOR=vim
 export NVM_LAZY_LOAD=true

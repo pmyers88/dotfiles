@@ -9,6 +9,7 @@ apps=(
     atom
     docker
     google-chrome
+    google-cloud-sdk
     gopro-studio
     java
     iterm2
