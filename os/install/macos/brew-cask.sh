@@ -13,6 +13,7 @@ apps=(
     gopro-studio
     java
     iterm2
+    libreoffice
     vlc
 )
 
