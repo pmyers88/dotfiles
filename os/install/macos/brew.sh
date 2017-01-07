@@ -20,6 +20,7 @@ apps=(
     tree
     wget
     yarn
+    youtube-dl
 )
 
 brew install "${apps[@]}"
