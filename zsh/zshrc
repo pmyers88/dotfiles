@@ -12,25 +12,16 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-# ALIASES
-alias sz='source $HOME/.zshrc'
-alias redot=$DOTFILES/os/setup.sh
-
-# git
-alias gb='git branch'
-alias gco='git checkout'
-alias gd='git diff'
-alias gl='git pull --prune'
-alias gs='git status -sb'
-alias gsta='git stash'
-alias gp='git push origin HEAD'
-
 # antigen stuff
 source $ANTIGEN_HOME/antigen.zsh
 
 # gcloud
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+
+for file in $DOTFILES/system/* ; do
+  [ -f "$file" ] && . "$file"
+done
 
 antigen use oh-my-zsh
 
