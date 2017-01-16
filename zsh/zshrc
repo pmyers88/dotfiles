@@ -39,8 +39,12 @@ antigen bundle docker-compose
 
 antigen apply
 
+# nvm stuff
 export NVM_DIR="$HOME/.nvm"
 source $NVM_DIR/nvm.sh
+
+# ruby stuff
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 # exports
 export BREW_FILE=$DOTFILES/os/install/macos/brew.sh

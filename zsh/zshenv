@@ -5,3 +5,4 @@ export EDITOR=vim
 export NVM_LAZY_LOAD=true
 # set default user so theme doesn't show it
 export DEFAULT_USER=phil
+export POSTGRES_USER=phil

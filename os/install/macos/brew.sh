@@ -21,6 +21,14 @@ apps=(
     wget
     yarn
     youtube-dl
+    # for RoR course
+    chromedriver
+    imagemagick
+    mongodb
+    phantomjs
+    postgresql
+    rbenv
+    ruby-build
 )
 
 brew install "${apps[@]}"
