@@ -8,6 +8,7 @@ apps=(
     android-file-transfer
     atom
     docker
+    gimp
     google-chrome
     google-cloud-sdk
     gopro-studio
@@ -15,6 +16,7 @@ apps=(
     iterm2
     libreoffice
     vlc
+    whatsapp
 )
 
 brew cask install "${apps[@]}"

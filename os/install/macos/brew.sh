@@ -16,6 +16,7 @@ apps=(
     docker
     docker-machine
     dockutil
+    go
     python
     tree
     wget
@@ -23,6 +24,7 @@ apps=(
     youtube-dl
     # for RoR course
     chromedriver
+    heroku
     imagemagick
     mongodb
     phantomjs
