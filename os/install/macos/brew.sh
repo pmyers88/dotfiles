@@ -20,8 +20,10 @@ apps=(
     python
     tree
     wget
+    watchman
     yarn
     youtube-dl
+    zsh
     # for RoR course
     chromedriver
     heroku
