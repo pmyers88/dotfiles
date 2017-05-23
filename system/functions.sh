@@ -5,3 +5,5 @@ gc() {
 ggi() {
   wget "https://raw.githubusercontent.com/github/gitignore/master/$1.gitignore" -O .gitignore
 }
+
+function emulator { cd "$(dirname "$(which emulator)")" && ./emulator "$@"; }

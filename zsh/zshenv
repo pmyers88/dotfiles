@@ -1,10 +1,18 @@
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 export DOTFILES=$HOME/Development/dotfiles
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$DOTFILES/scripts
 export ANTIGEN_HOME=$HOME/.antigen
 export EDITOR=vim
 export NVM_LAZY_LOAD=true
 # set default user so theme doesn't show it
 export DEFAULT_USER=phil
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:${ANDROID_HOME}/tools
+export PATH=$PATH:${ANDROID_HOME}/tools/bin
+export PATH=$PATH:${ANDROID_HOME}/platform-tools
+export BREW_FILE=$DOTFILES/os/install/macos/brew.sh
+export CASK_FILE=$DOTFILES/os/install/macos/brew-cask.sh
+
+# for rails course
 export POSTGRES_USER=postgres
 export POSTGRES_PASSWORD=postgres
 export POSTGRES_HOST=localhost
