@@ -23,10 +23,10 @@ create_symlinks() {
 
         if [ ! -e "$targetFile" ]; then
 
-	    ln -fs $sourceFile $targetFile
-	    echo "$targetFile → $sourceFile"
+          ln -fs $sourceFile $targetFile
+          echo "$targetFile → $sourceFile"
 
-        elif [ "$(readlink "$targetFile")" == "$sourceFile" ]; then
+          elif [ "$(readlink "$targetFile")" == "$sourceFile" ]; then
             echo "$targetFile → $sourceFile"
         fi
 
