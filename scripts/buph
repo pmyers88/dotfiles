@@ -1,0 +1,85 @@
+#!/usr/local/bin/python
+
+import argparse
+import ConfigParser
+import os
+import shutil
+import glob
+import sys
+
+from PIL import Image
+from PIL.ExifTags import TAGS
+from progressbar import ProgressBar
+from datetime import datetime
+
+
+CONFIG_FILENAME = '/Users/phil/Development/dotfiles/system/config/backup-photos.cfg'
+DEFAULT = 'settings'
+SOURCE = 'source'
+DESTINATION = 'destination'
+DATE_TIME_ORIGINAL = 'DateTime'
+DATE_FORMAT = '%Y:%m:%d %H:%M:%S'
+
+def get_field(exif, field):
+    for (k,v) in exif.iteritems():
+        if TAGS.get(k) == field:
+            return v
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--source', help='the directory to copy the photos from')
+    parser.add_argument('--destination', help='the directory to copy the photos to')
+    parser.add_argument('--save', help='save --from and --to configuration', action='store_true')
+    args = parser.parse_args()
+
+    source, destination = 'None', 'None'
+    config = ConfigParser.ConfigParser()
+
+    if os.path.exists(CONFIG_FILENAME):
+        config.read(CONFIG_FILENAME)
+        source = config.get(DEFAULT, SOURCE)
+        destination = config.get(DEFAULT, DESTINATION)
+
+    if args.source and args.destination:
+        source, destination = args.source, args.destination
+
+    if not os.path.exists(source):
+        sys.exit('Source %s does not exist.' % source)
+    if not os.path.exists(destination):
+        sys.exit('Destination path %s does not exist.' % destination)
+
+    if args.save:
+        if not config.has_section(DEFAULT):
+            config.add_section(DEFAULT)
+        config.set(DEFAULT, SOURCE, source)
+        config.set(DEFAULT, DESTINATION, destination)
+        with open(CONFIG_FILENAME, 'wb') as config_file:
+            config.write(config_file)
+
+    if not source or not destination:
+        print 'Either the source or the configuration are not set. Try running ./backup-photos --help for help.'
+
+    print 'Copying files from %s to %s.' % (source, destination)
+
+    count = 0
+    source_files = glob.glob('%s/*.JPG' % source)
+    bar = ProgressBar(redirect_stdout=True, max_value=len(source_files))
+    for i, file_path in enumerate(source_files):
+        im = Image.open(file_path)
+        exif = im._getexif()
+        im_date_time = get_field(exif, DATE_TIME_ORIGINAL)
+        im_date_str = str(datetime.strptime(im_date_time, DATE_FORMAT).date())
+
+        dest_directory = '%s/%s' % (destination, im_date_str)
+        if not os.path.exists(dest_directory):
+            print 'Creating directory %s' % dest_directory
+            os.makedirs(dest_directory)
+
+        src_dir, file_name = os.path.split(file_path)
+        if not os.path.exists('%s/%s' % (dest_directory, file_name)):
+            shutil.copy2(file_path, dest_directory)
+            count += 1
+
+        bar.update(i)
+
+    print 'Finished copying %d files.' % count
