@@ -1,5 +1,7 @@
 # ALIASES
 alias redot=$DOTFILES/os/setup.sh
+alias rebrew=$DOTFILES/os/install/macos/brew.sh
+alias recask=$DOTFILES/os/install/macos/brew-cask.sh
 alias szrc='source $HOME/.zshrc'
 alias szenv='source $HOME/.zshenv'
 alias sz='szenv && szrc'
