@@ -17,6 +17,7 @@ apps=(
     docker-machine
     dockutil
     go
+    jq
     python
     tree
     wget
