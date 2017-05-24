@@ -6,4 +6,5 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 ./brew-cask.sh
 ./brew-science.sh
 ./antigen.sh
+./nvm.sh
 ./dock.sh
