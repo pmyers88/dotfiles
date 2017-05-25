@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+# crhd - CLI tool for printing my cryptocurrency hodlings
+
+typeset -A currency_price
+eval "$(jq -r 'to_entries|map(@sh "currency_price[\(.key)]=\(.value)")|.[]' $DOTFILES/system/config/crypto-holdings.json | tr -d \')"
+
+total=0
+
+for currency in "${(@k)currency_price}"; do
+  price="$(curl -s "https://api.coinmarketcap.com/v1/ticker/$currency/?convert=USD" | jq -r '.[] | .price_usd')"
+  total_for_currency=$(($currency_price[$currency] * $price))
+  echo "The current price of $currency is \$$price. You own $currency_price[$currency], which amounts to \$$total_for_currency."
+  ((total+=$total_for_currency))
+done
+
+echo "Your total cryptocurrency holdings are \$$total"
