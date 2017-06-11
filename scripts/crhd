@@ -2,16 +2,89 @@
 
 # crhd - CLI tool for printing my cryptocurrency hodlings
 
-typeset -A currency_price
-eval "$(jq -r 'to_entries|map(@sh "currency_price[\(.key)]=\(.value)")|.[]' $DOTFILES/system/config/crypto-holdings.json | tr -d \')"
+# +----------+------------+----------+--------------+------------+------------------+-------------------+
+# | Currency | Coins      | Price    | Market Value | Cost Basis | Gain/Loss Amount | Gain/Loss Percent |
+# +----------+------------+----------+--------------+------------+------------------+-------------------+
+# | Bitcoin  | 2.52893172 | $2526.68 | $6389.80     | $740.99    | +$5648.81        | +762.33%          |
+# +----------+------------+----------+--------------+------------+------------------+-------------------+
+# | Ethereum | 6.4002207  | $236.40  | $1513.00     | $126.81    | +$1386.19        | +1093.12%         |
+# +----------+------------+----------+--------------+------------+------------------+-------------------+
+# | Litecoin | 1.65616657 | $27.40   | $45.38       | $50.74     | -$5.36           | -10.57%           |
+# +----------+------------+----------+--------------+------------+------------------+-------------------+
+# | Total    | N/A        | N/A      | $7948.18     | $918.54    | +$7029.64        | +765.31%          |
+# +----------+------------+----------+--------------+------------+------------------+-------------------+
 
-total=0
+# colors
+RED='\e[0;31m'
+GREEN='\e[0;32m'
+NO_COLOR='\033[0m'
 
-for currency in "${(@k)currency_price}"; do
+# headers for columns
+headers=(
+  "Currency"
+  "Coins     "
+  "Price   "
+  "Market Value"
+  "Cost Basis"
+  "Gain/Loss $"
+  "Gain/Loss %"
+)
+
+print_dashes() {
+  printf -v line '%*s' "$1"
+  printf ${line// /-}+
+}
+
+print_border() {
+  printf '+'
+  for header in $headers; do
+    print_dashes $((${#header} + 2))
+  done
+  printf '\n'
+}
+
+# read data from json files and save to these variables
+typeset -A currency_holdings
+typeset -A transaction_price
+
+eval "$(jq -r 'to_entries|map(@sh "currency_holdings[\(.key)]=\(.value)")|.[]' $DOTFILES/system/config/crypto-holdings.json | tr -d \')"
+eval "$(jq -r 'to_entries|map(@sh "transaction_price[\(.key)]=\(.value)")|.[]' $DOTFILES/system/config/transaction-prices.json | tr -d \')"
+
+# print the header
+print_border
+printf "| %s | %s | %s | %s | %s | %s | %s |\n" "${headers[@]}"
+print_border
+
+# fetch current price for each currency; calculate gains/losses, etc.
+for currency in "${(@k)currency_holdings}"; do
+  unset data
+  data+=($currency)
+  coins=$currency_holdings[$currency]
+  data+=($coins)
   price="$(curl -s "https://api.coinmarketcap.com/v1/ticker/$currency/?convert=USD" | jq -r '.[] | .price_usd')"
-  total_for_currency=$(($currency_price[$currency] * $price))
-  echo "The current price of $currency is \$$price. You own $currency_price[$currency], which amounts to \$$total_for_currency."
-  ((total+=$total_for_currency))
+  data+=($price)
+  market_value=$(($coins * $price))
+  data+=($market_value)
+  cost_basis=$transaction_price[$currency]
+  data+=($cost_basis)
+  difference=$(($market_value - $cost_basis))
+  data+=($difference)
+  percent_difference=$(($difference / $cost_basis * 100))
+  data+=($percent_difference)
+
+  # print the row for this currency
+  printf "| %${#headers[1]}s | %10s | \$%-7.2f | \$%-$((${#headers[4]} - 1)).2f | \$%-$((${#headers[5]} - 1)).2f | $([[ ${difference} < 0 ]] && echo "$RED" || echo "$GREEN")\$%'-$((${#headers[6]} - 1)).2f${NO_COLOR} | $([[ ${percent_difference} < 0 ]] && echo "$RED" || echo "$GREEN")%'$((${#headers[7]} - 1)).2f%%${NO_COLOR} |\n" "${data[@]}"
+  print_border
+
+  # keep track of totals
+  ((total+=$market_value))
+  ((total_spent+=$cost_basis))
 done
 
-echo "Your total cryptocurrency holdings are \$$total"
+# calculate totals
+total_difference=$(($total - $total_spent))
+total_percent_difference=$((($total - $total_spent) / $total_spent * 100))
+
+# print totals
+printf "| %$((${#headers[1]}))s | %10s | %8s | \$%-$((${#headers[4]} - 1)).2f | \$%-$((${#headers[5]} - 1)).2f | $([[ ${total_difference} < 0 ]] && echo "$RED" || echo "$GREEN")\$%'-$((${#headers[6]} - 1)).2f${NO_COLOR} | $([[ ${total_percent_difference} < 0 ]] && echo "$RED" || echo "$GREEN")%'$((${#headers[7]} - 1)).2f%%${NO_COLOR} |\n" "Total" "N/A" "N/A" $total $total_spent $total_difference $total_percent_difference
+print_border
