@@ -5,23 +5,26 @@ brew tap caskroom/cask
 # Install packages
 
 apps=(
-    android-file-transfer
-    android-studio
+#    android-file-transfer
+#    android-studio
     atom
     docker
-    ethereum-wallet
-    gimp
-    google-chrome
+#    ethereum-wallet
+#    gimp
+#    google-chrome
     google-cloud-sdk
-    gopro-studio
-    java
-    inkscape
+#    gopro-studio
+#    java
+#    inkscape
     iterm2
-    libreoffice
-    skype
-    vlc
+    sequel-pro
+    slack
+#    libreoffice
+#    skype
+#    vlc
+    visual-studio-code
     whatsapp
-    xquartz
+#    xquartz
 )
 
 brew cask install "${apps[@]}"

@@ -4,15 +4,23 @@ export ANTIGEN_HOME=$HOME/.antigen
 export EDITOR=vim
 export NVM_LAZY_LOAD=true
 # set default user so theme doesn't show it
-export DEFAULT_USER=phil
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:${ANDROID_HOME}/tools
-export PATH=$PATH:${ANDROID_HOME}/tools/bin
-export PATH=$PATH:${ANDROID_HOME}/platform-tools
+export DEFAULT_USER=philmyers
+export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.google-cloud-auth/emissary-project-1289.json
+#export ANDROID_HOME=$HOME/Library/Android/sdk
+#export PATH=$PATH:${ANDROID_HOME}/tools
+#export PATH=$PATH:${ANDROID_HOME}/tools/bin
+#export PATH=$PATH:${ANDROID_HOME}/platform-tools
 export BREW_FILE=$DOTFILES/os/install/macos/brew.sh
 export CASK_FILE=$DOTFILES/os/install/macos/brew-cask.sh
+export ZSHRC=$DOTFILES/zsh/zshrc
+export ZSHENV=$DOTFILES/zsh/zshenv
+export ALIASES=$DOTFILES/system/aliases.sh
+#export GOOGLE_APPLICATION_CREDENTIALS=$HOME/Development/emissary/bin/secrets/key.json
+alias cloud_sql="cloud_sql_proxy -dir=/cloudsql -instances=emissary-staging-1291:us-east1:staging-sql-emissary"
 
 # for rails course
-export POSTGRES_USER=postgres
-export POSTGRES_PASSWORD=postgres
-export POSTGRES_HOST=localhost
+#export POSTGRES_USER=postgres
+#export POSTGRES_PASSWORD=postgres
+#export POSTGRES_HOST=localhost
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/sbin:$PATH"

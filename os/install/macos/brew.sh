@@ -12,31 +12,32 @@ brew upgrade
 # Install packages
 
 apps=(
-    android-platform-tools
-    docker
-    docker-machine
+#    android-platform-tools
+#    docker
+#    docker-machine
     dockutil
-    go
+#    go
     jq
-    python
+    kibana
+#    python
     tree
     wget
-    watchman
-    yarn
-    youtube-dl
+#    watchman
+#    yarn
+#    youtube-dl
     zsh
     # for RoR course
-    chromedriver
-    heroku
-    imagemagick
-    mongodb
-    phantomjs
-    postgresql
-    rbenv
-    ruby-build
+#    chromedriver
+#    heroku
+#    imagemagick
+#    mongodb
+#    phantomjs
+#    postgresql
+#    rbenv
+#    ruby-build
 )
 
 brew install "${apps[@]}"
 
-brew link docker
-brew install docker-compose
+#brew link docker
+#brew install docker-compose
